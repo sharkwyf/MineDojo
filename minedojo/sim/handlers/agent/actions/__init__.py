@@ -3,9 +3,5 @@
 
 
 from .camera import *
-from .craft import *
-from .equip import *
+from .mousewheel import *
 from .keyboard import *
-from .place import *
-from .smelt import *
-from .swap_slot import SwapSlotAction

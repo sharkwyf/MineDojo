@@ -29,13 +29,13 @@ class DeltaInventoryWrapper(gym.Wrapper):
         assert "masks" in env.observation_space.keys()
         assert "craft_smelt" in env.observation_space["masks"].keys()
         assert isinstance(
-            env.action_space, spaces.MultiDiscrete
+            env.action_space, spaces.Dict
         ), "please use this wrapper with `NNActionSpaceWrapper!`"
         assert (
-            len(env.action_space.nvec) == 8
+            len(env.action_space.spaces) == 24
         ), "please use this wrapper with `NNActionSpaceWrapper!`"
-        assert op_action_idx < len(env.action_space.nvec)
-        assert craft_arg_idx < len(env.action_space.nvec)
+        assert op_action_idx < len(env.action_space.spaces)
+        assert craft_arg_idx < len(env.action_space.spaces)
         super().__init__(env=env)
         obs_space = env.observation_space
         obs_space["delta_inv"] = spaces.Dict(
@@ -120,8 +120,8 @@ class DeltaInventoryWrapper(gym.Wrapper):
         else:
             new_craft_idx = (
                 None
-                if action[self._op_action_idx] != self._craft_action_idx
-                else action[self._craft_arg_idx]
+                # if action[self._op_action_idx] != self._craft_action_idx
+                # else action[self._craft_arg_idx]
             )
             self._prev_craft_actions.append(new_craft_idx)
             craft_idx = self._prev_craft_actions[0]

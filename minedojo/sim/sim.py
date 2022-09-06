@@ -231,6 +231,7 @@ class MineDojoSim(gym.Env):
             "left",
             "right",
             "jump",
+            "inventory",
             "sneak",
             "sprint",
             "use",
@@ -239,17 +240,6 @@ class MineDojoSim(gym.Env):
         ]
         action_handlers = [
             handlers.CameraAction(),
-            handlers.SmeltAction(
-                ["none"] + mc.ALL_SMELTING_ITEMS, _other="none", _default="none"
-            ),
-            handlers.CraftAction(
-                ["none"] + mc.ALL_PERSONAL_CRAFTING_ITEMS,
-                _other="none",
-                _default="none",
-            ),
-            handlers.CraftWithTableAction(
-                ["none"] + mc.ALL_CRAFTING_TABLE_ITEMS, _other="none", _default="none"
-            ),
         ]
         action_handlers.extend(
             [
@@ -257,32 +247,6 @@ class MineDojoSim(gym.Env):
                 for k in common_actions
             ]
         )
-        if event_level_control:
-            action_handlers.extend(
-                [
-                    handlers.EquipAction(
-                        ["none"] + mc.ALL_ITEMS, _other="none", _default="none"
-                    ),
-                    handlers.PlaceBlock(
-                        ["none"] + mc.ALL_ITEMS, _other="none", _default="none"
-                    ),
-                ]
-            )
-        else:
-            action_handlers.append(handlers.SwapSlotAction())
-            action_handlers.append(
-                handlers.KeybasedCommandAction(
-                    "pickItem", mc.INVERSE_KEYMAP["pickItem"]
-                )
-            )
-            action_handlers.extend(
-                [
-                    handlers.KeybasedCommandAction(
-                        f"hotbar.{i}", mc.INVERSE_KEYMAP[str(i)]
-                    )
-                    for i in range(1, 10)
-                ]
-            )
         # configure agent handlers
         agent_handlers = []
         # configure agent start handlers, e.g., initial inventory

@@ -1,7 +1,11 @@
 # Copyright (c) 2020 All Rights Reserved
 # Author: William H. Guss, Brandon Houghton
+
 import minedojo.sim.spaces as spaces
 from minedojo.sim.handlers.agent.action import Action
+import jinja2
+from minedojo.sim.handlers.translation import TranslationHandler
+import typing
 
 
 class KeybasedCommandAction(Action):
@@ -12,30 +16,24 @@ class KeybasedCommandAction(Action):
     This is not to be confused with keyboard acitons, wehreby both anvil and malmo
     simulate and act on direct key codes.
 
-    Combinations of KeybasedCommandActions yield actions like:
-
-    .. code-block:: json
-
-        {
-            “move” : 1,
-            “jump”: 1
-        }
-    where move and jump are the commands, which correspond to keys like 'W', 'SPACE', etc.
+    Combinations of KeybasedCommandActions yield acitons like:
+    {
+			“move” : 1,
+			“jump”: 1 
+    } 
+    where move and jump are hte commands, which correspond to keys like 'W', 'SPACE', etc.
 
     This is as opposed to keyboard actions (see the following class definition in keyboard.py)
     which yield actions like:
-
-    .. code-block:: json
-
-        {
-            "keyboard" : {
-                "W" : 1,
-                "A": 1,
-                "S": 0,
-                "E": 1,
-                ...
-            }
+    {
+        "keyboard" : {
+            "W" : 1,
+            "A": 1,
+            "S": 0,
+            "E": 1,
+            ...
         }
+    }
     More information can be found in the unification document (internal).
     """
 
@@ -63,8 +61,8 @@ class KeybasedCommandAction(Action):
         self.keys = keys
 
     def from_universal(self, x):
-        # actions_mapped is just the raw key codes.
-        actions_mapped = list(x["custom_action"]["actions"].keys())
+        actions_mapped = set(str(k) for k in x['custom_action']['actions']['keys'])
+
         offset = self.space.begin if isinstance(self.space, spaces.DiscreteRange) else 0
         default = 0
 
@@ -76,7 +74,6 @@ class KeybasedCommandAction(Action):
                     return i + 1 + offset
 
         return default
-
 
 # TODO: This will be useful for when full keyboard actions are introduced.
 # class KeyboardAction(TranslationHandler):
@@ -119,7 +116,7 @@ class KeybasedCommandAction(Action):
 #         return self.TEMPLATE.render(commands=self.keymap.values())
 
 #     def to_hero(self, x : typing.Dict[str, np.ndarray]) -> str:
-#         """ Joins all of the commands in X to a string by new lines.
+#         """ Joins all of the commands in X to a string by new lines.    
 #         First joins the keys and values in X with a space.
 
 #         Args:

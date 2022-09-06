@@ -1,3 +1,6 @@
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 import minedojo
 
 
@@ -12,8 +15,11 @@ if __name__ == "__main__":
     print(f"[INFO] Create a task with prompt: {env.task_prompt}")
 
     env.reset()
-    for _ in range(20):
-        obs, reward, done, info = env.step(env.action_space.no_op())
+    for _ in range(2000):
+        action = env.action_space.no_op()
+        action["attack"] = 1
+        action["camera"] = [0, 3]
+        obs, reward, done, info = env.step(action)
     env.close()
 
     print("[INFO] Installation Success")

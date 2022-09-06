@@ -27,6 +27,6 @@ class NearbyToolsObservation(TranslationHandler):
 
     def from_hero(self, x: dict[str, Any]):
         return {
-            "table": np.array(x["nearby_crafting_table"], dtype=bool),
-            "furnace": np.array(x["nearby_furnace"], dtype=bool),
+            "table": np.array(False, dtype=bool), # np.array(x["nearby_crafting_table"], dtype=bool),
+            "furnace": np.array(False, dtype=bool), # np.array(x["nearby_furnace"], dtype=bool),
         }

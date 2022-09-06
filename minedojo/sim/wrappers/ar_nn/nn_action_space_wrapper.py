@@ -22,11 +22,6 @@ class NNActionSpaceWrapper(gym.Wrapper):
         strict_check: bool = True,
     ):
         assert (
-            "equip" in env.action_space.keys()
-            and "place" in env.action_space.keys()
-            and "swap_slot" not in env.action_space.keys()
-        ), "please use this wrapper with event_level_control = True"
-        assert (
             "inventory" in env.observation_space.keys()
         ), f"missing inventory from obs space"
         super().__init__(env=env)
@@ -34,27 +29,60 @@ class NNActionSpaceWrapper(gym.Wrapper):
         n_pitch_bins = math.ceil(360 / discretized_camera_interval) + 1
         n_yaw_bins = math.ceil(360 / discretized_camera_interval) + 1
 
-        self.action_space = spaces.MultiDiscrete(
-            [
-                3,  # forward and back, 0: noop, 1: forward, 2: back
-                3,  # 0: noop, 1: left, 2: right
-                4,  # 0: noop, 1: jump, 2: sneak, 3: sprint
-                n_pitch_bins,  # camera pitch, 0: -180, n_pitch_bins - 1: +180
-                n_yaw_bins,  # camera yaw, 0: -180, n_yaw_bins - 1: +180,
-                8,  # functional actions, 0: no_op, 1: use, 2: drop, 3: attack 4: craft 5: equip 6: place 7: destroy
-                len(MC.ALL_CRAFT_SMELT_ITEMS),  # arg for "craft"
-                MC.N_INV_SLOTS,  # arg for "equip", "place", and "destroy"
-            ],
-            noop_vec=[
-                0,
-                0,
-                0,
-                (n_pitch_bins - 1) // 2,
-                (n_yaw_bins - 1) // 2,
-                0,
-                0,
-                0,
-            ],
+        self.action_space = spaces.Dict(
+            spaces={
+                "ESC": spaces.Discrete(2),
+                "attack": spaces.Discrete(2),
+                "back": spaces.Discrete(2),
+                "camera": spaces.Box(low=-180, high=180, shape=(2,), dtype=np.float32),
+                "drop": spaces.Discrete(2),
+                "forward": spaces.Discrete(2),
+                "hotbar.1": spaces.Discrete(2),
+                "hotbar.2": spaces.Discrete(2),
+                "hotbar.3": spaces.Discrete(2),
+                "hotbar.4": spaces.Discrete(2),
+                "hotbar.5": spaces.Discrete(2),
+                "hotbar.6": spaces.Discrete(2),
+                "hotbar.7": spaces.Discrete(2),
+                "hotbar.8": spaces.Discrete(2),
+                "hotbar.9": spaces.Discrete(2),
+                "inventory": spaces.Discrete(2),
+                "jump": spaces.Discrete(2),
+                "left": spaces.Discrete(2),
+                "pickItem": spaces.Discrete(2),
+                "right": spaces.Discrete(2),
+                "sneak": spaces.Discrete(2),
+                "sprint": spaces.Discrete(2),
+                "swapHands": spaces.Discrete(2),
+                "use": spaces.Discrete(2)
+            },
+            # noop_vec={
+            #     "ESC":       0,
+            #     "attack":    0,
+            #     "back":      0,
+            #     "camera.pitch": 0,
+            #     "camera.yaw": 0,
+            #     "drop":      0,
+            #     "forward":   0,
+            #     "hotbar.1":  0,
+            #     "hotbar.2":  0,
+            #     "hotbar.3":  0,
+            #     "hotbar.4":  0,
+            #     "hotbar.5":  0,
+            #     "hotbar.6":  0,
+            #     "hotbar.7":  0,
+            #     "hotbar.8":  0,
+            #     "hotbar.9":  0,
+            #     "inventory": 0,
+            #     "jump":      0,
+            #     "left":      0,
+            #     "pickItem":  0,
+            #     "right":     0,
+            #     "sneak":     0,
+            #     "sprint":    0,
+            #     "swapHands": 0,
+            #     "use":       0,
+            # },
         )
         self._cam_interval = discretized_camera_interval
         self._inventory_names = None
@@ -69,84 +97,18 @@ class NNActionSpaceWrapper(gym.Wrapper):
         noop = self.env.action_space.no_op()
 
         # ------ parse main actions ------
-        # parse forward and back
-        if action[0] == 1:
-            noop["forward"] = 1
-        elif action[0] == 2:
-            noop["back"] = 1
-        # parse left and right
-        if action[1] == 1:
-            noop["left"] = 1
-        elif action[1] == 2:
-            noop["right"] = 1
-        # parse jump sneak and sprint
-        if action[2] == 1:
-            noop["jump"] = 1
-        elif action[2] == 2:
-            noop["sneak"] = 1
-        elif action[2] == 3:
-            noop["sprint"] = 1
-        # parse camera pitch
-        noop["camera"][0] = float(action[3]) * self._cam_interval + (-180)
-        # parse camera yaw
-        noop["camera"][1] = float(action[4]) * self._cam_interval + (-180)
-
-        # ------ parse functional actions ------
-        fn_action = action[5]
-        # note that 0 is no_op
-        if fn_action == 0:
-            pass
-        elif fn_action == 1:
-            noop["use"] = 1
-        elif fn_action == 2:
-            noop["drop"] = 1
-        elif fn_action == 3:
-            noop["attack"] = 1
-        elif fn_action == 4:
-            item_to_craft = MC.ALL_CRAFT_SMELT_ITEMS[action[6]]
-            if item_to_craft in MC.ALL_HAND_CRAFT_ITEMS_NN_ACTIONS:
-                noop["craft"] = item_to_craft
-            elif item_to_craft in MC.ALL_TABLE_CRAFT_ONLY_ITEMS_NN_ACTIONS:
-                noop["craft_with_table"] = item_to_craft
-            elif item_to_craft in MC.ALL_SMELT_ITEMS_NN_ACTIONS:
-                noop["smelt"] = item_to_craft
-            elif self._strict_check:
-                raise ValueError(f"Unknown item {item_to_craft} to craft/smelt!")
-        elif fn_action == 5:
-            assert action[7] in list(range(MC.N_INV_SLOTS))
-            item_id = self._inventory_names[action[7]].replace(" ", "_")
-            if item_id == "air":
-                if self._strict_check:
-                    raise ValueError(
-                        "Trying to equip air, raise error with strict check."
-                        "You shouldn't execute this action, maybe something wrong with the mask!"
-                    )
-            else:
-                noop["equip"] = item_id
-        elif fn_action == 6:
-            assert action[7] in list(range(MC.N_INV_SLOTS))
-            item_id = self._inventory_names[action[7]].replace(" ", "_")
-            if item_id == "air":
-                if self._strict_check:
-                    raise ValueError(
-                        "Trying to place air, raise error with strict check."
-                        "You shouldn't execute this action, maybe something wrong with the mask!"
-                    )
-            else:
-                noop["place"] = item_id
-        elif fn_action == 7:
-            assert action[7] in list(range(MC.N_INV_SLOTS))
-            item_id = self._inventory_names[action[7]].replace(" ", "_")
-            if item_id == "air":
-                if self._strict_check:
-                    raise ValueError(
-                        "Trying to destroy air, raise error with strict check."
-                        "You shouldn't execute this action, maybe something wrong with the mask!"
-                    )
-            else:
-                destroy_item = (True, action[7])
-        else:
-            raise ValueError(f"Unknown value {fn_action} for function action")
+        noop["attack"] = action["attack"]
+        noop["back"] = action["back"]
+        noop["camera"] = action["camera"]
+        noop["drop"] = action["drop"]
+        noop["forward"] = action["forward"]
+        noop["inventory"] = action["inventory"]
+        noop["jump"] = action["jump"]
+        noop["left"] = action["left"]
+        noop["right"] = action["right"]
+        noop["sneak"] = action["sneak"]
+        noop["sprint"] = action["sprint"]
+        noop["use"] = action["use"]
         return noop, destroy_item
 
     def reverse_action(self, action):
@@ -274,8 +236,8 @@ class NNActionSpaceWrapper(gym.Wrapper):
             obs, reward, done, info = self.env.step(malmo_action)
 
         # handle malmo's lags
-        if action[5] in {2, 4, 5, 6, 7}:
-            for _ in range(2):
-                obs, reward, done, info = self.env.step(self.env.action_space.no_op())
+        # if action[5] in {2, 4, 5, 6, 7}:
+        for _ in range(1):
+            obs, reward, done, info = self.env.step(self.env.action_space.no_op())
         self._inventory_names = obs["inventory"]["name"].copy()
         return obs, reward, done, info
