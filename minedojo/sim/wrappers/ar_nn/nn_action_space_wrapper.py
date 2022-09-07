@@ -109,6 +109,15 @@ class NNActionSpaceWrapper(gym.Wrapper):
         noop["sneak"] = action["sneak"]
         noop["sprint"] = action["sprint"]
         noop["use"] = action["use"]
+        noop["hotbar.1"] = action["hotbar.1"]
+        noop["hotbar.2"] = action["hotbar.2"]
+        noop["hotbar.3"] = action["hotbar.3"]
+        noop["hotbar.4"] = action["hotbar.4"]
+        noop["hotbar.5"] = action["hotbar.5"]
+        noop["hotbar.6"] = action["hotbar.6"]
+        noop["hotbar.7"] = action["hotbar.7"]
+        noop["hotbar.8"] = action["hotbar.8"]
+        noop["hotbar.9"] = action["hotbar.9"]
         return noop, destroy_item
 
     def reverse_action(self, action):

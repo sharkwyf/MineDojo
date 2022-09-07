@@ -17,8 +17,10 @@ if __name__ == "__main__":
     env.reset()
     for _ in range(2000):
         action = env.action_space.no_op()
-        action["attack"] = 1
+        action["attack"] = 0
         action["camera"] = [0, 3]
+        action["hotbar.3"] = 0
+        action["inventory"] = 1
         obs, reward, done, info = env.step(action)
     env.close()
 

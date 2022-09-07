@@ -479,7 +479,7 @@ KEYMAP = {
     # '38': 'advancements',
 }
 
-KEYMAP.update({str(x + 1): str(x) for x in range(1, 10)})
+KEYMAP.update({str(x + 1): "hotbar." + str(x) for x in range(1, 10)})
 
 # TODO: add all other keys.
 INVERSE_KEYMAP = {KEYMAP[key]: key for key in KEYMAP}

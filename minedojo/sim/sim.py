@@ -237,6 +237,15 @@ class MineDojoSim(gym.Env):
             "use",
             "attack",
             "drop",
+            "hotbar.1",
+            "hotbar.2",
+            "hotbar.3",
+            "hotbar.4",
+            "hotbar.5",
+            "hotbar.6",
+            "hotbar.7",
+            "hotbar.8",
+            "hotbar.9",
         ]
         action_handlers = [
             handlers.CameraAction(),
