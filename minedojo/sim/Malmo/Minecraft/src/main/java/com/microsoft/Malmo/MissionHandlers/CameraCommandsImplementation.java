@@ -54,32 +54,22 @@ public class CameraCommandsImplementation extends CommandBase {
                 double pitch = Double.parseDouble(camParams[0]);
                 double yaw = Double.parseDouble(camParams[1]);
 // TODO (yunfan): Consider using the following commented code when upgrade to fully keyboard-mouse-level control
-//                 if (MalmoMod.isLowLevelInput()) {
-//                     double sensitivity = 3.0;
-//                     if (yaw != 0.0 || pitch != 0.0) {
-//                         FakeMouse.addMovement((int) (sensitivity * yaw), -(int) (sensitivity * pitch));
-//                     }
-//                 } else {
-//                     EntityPlayerSP player = Minecraft.getMinecraft().player;
-//                     if (player != null) {
-//                         this.currentYaw = player.rotationYaw;
-//                         this.currentPitch = player.rotationPitch;
-//
-//                         player.setPositionAndRotation(player.posX, player.posY, player.posZ, (float) (this.currentYaw + yaw), (float) (this.currentPitch + pitch));
-//
-//                         this.currentYaw = player.rotationYaw;
-//                         this.currentPitch = player.rotationPitch;
-//                     }
-//                 }
-                EntityPlayerSP player = Minecraft.getMinecraft().player;
-                if (player != null) {
-                    this.currentYaw = player.rotationYaw;
-                    this.currentPitch = player.rotationPitch;
+                if (MalmoMod.isLowLevelInput()) {
+                    double sensitivity = 3.0;
+                    if (yaw != 0.0 || pitch != 0.0) {
+                        FakeMouse.addMovement((int) (sensitivity * yaw), -(int) (sensitivity * pitch));
+                    }
+                } else {
+                    EntityPlayerSP player = Minecraft.getMinecraft().player;
+                    if (player != null) {
+                        this.currentYaw = player.rotationYaw;
+                        this.currentPitch = player.rotationPitch;
 
-                    player.setPositionAndRotation(player.posX, player.posY, player.posZ, (float) (this.currentYaw + yaw), (float) (this.currentPitch + pitch));
+                        player.setPositionAndRotation(player.posX, player.posY, player.posZ, (float) (this.currentYaw + yaw), (float) (this.currentPitch + pitch));
 
-                    this.currentYaw = player.rotationYaw;
-                    this.currentPitch = player.rotationPitch;
+                        this.currentYaw = player.rotationYaw;
+                        this.currentPitch = player.rotationPitch;
+                    }
                 }
                 return true;
             }

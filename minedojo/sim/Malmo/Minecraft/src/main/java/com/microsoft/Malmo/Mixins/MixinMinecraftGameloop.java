@@ -273,8 +273,8 @@ public abstract class MixinMinecraftGameloop {
     public void setIngameFocus()
     {
         if (!this.inGameHasFocus) {
-            // this.inGameHasFocus = true;
-            // this.displayGuiScreen((GuiScreen) null);
+            this.inGameHasFocus = true;
+            this.displayGuiScreen((GuiScreen) null);
             this.leftClickCounter = 10000;
         }
     }

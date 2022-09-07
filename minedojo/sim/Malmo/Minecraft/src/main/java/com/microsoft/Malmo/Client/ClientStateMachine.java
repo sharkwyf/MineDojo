@@ -1854,8 +1854,8 @@ public class ClientStateMachine extends StateMachine implements IMalmoMessageLis
 
                             @Override
                             public void run() {
-                                Minecraft.getMinecraft().displayGuiScreen((GuiScreen)null);					
-                                Minecraft.getMinecraft().setIngameFocus();
+                                // Minecraft.getMinecraft().displayGuiScreen((GuiScreen)null);					
+                                // Minecraft.getMinecraft().setIngameFocus();
                             }
                         });
                     }
@@ -2146,7 +2146,7 @@ public class ClientStateMachine extends StateMachine implements IMalmoMessageLis
             }
             if (phase == Phase.END)
             {
-                Minecraft.getMinecraft().setIngameFocus();   
+                // Minecraft.getMinecraft().setIngameFocus();   
 
                 // Check whether or not we want to quit:
                 IWantToQuit quitHandler = (currentMissionBehaviour() != null) ? currentMissionBehaviour().quitProducer : null;
