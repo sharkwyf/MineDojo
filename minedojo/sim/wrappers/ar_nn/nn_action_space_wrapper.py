@@ -124,6 +124,7 @@ class NNActionSpaceWrapper(gym.Wrapper):
         """
         Malmo action to NN action
         """
+        raise NotImplementedError
         # first convert camera actions to [-pi, +pi]
         action["camera"] = (
             np.arctan2(
@@ -246,7 +247,7 @@ class NNActionSpaceWrapper(gym.Wrapper):
 
         # handle malmo's lags
         # if action[5] in {2, 4, 5, 6, 7}:
-        for _ in range(1):
-            obs, reward, done, info = self.env.step(self.env.action_space.no_op())
+        #     for _ in range(1):
+        #         obs, reward, done, info = self.env.step(self.env.action_space.no_op())
         self._inventory_names = obs["inventory"]["name"].copy()
         return obs, reward, done, info
