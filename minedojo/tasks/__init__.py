@@ -530,6 +530,47 @@ def make(task_id: str, *args, cam_interval: int | float = 15, **kwargs):
         "survival",
     ]:
         env_obj = _meta_task_make(task_id, *args, **kwargs)
+    elif task_id.startswith("custom:"):
+        env_obj = _custom_task_make(task_id, *args, **kwargs)
     else:
         raise ValueError(f"Invalid task id provided {task_id}")
+    return ARNNWrapper(env_obj, cam_interval=cam_interval)
+
+
+# Custom Tasks
+def _custom_task_make(task_id, *args, **kwargs):
+    """
+    """
+    from .custom_tasks import CUSTOM_TASKS, CustomTaskBase
+    # grab task configs
+    task_id = task_id.lower()
+    task_specs = CUSTOM_TASKS[task_id].copy()
+
+    # meta task
+    meta_task_cls = task_specs.pop("__cls__")
+    if meta_task_cls is not None:
+        env_obj = _meta_task_make(meta_task_cls, *args, **task_specs, **kwargs)
+    else:        
+        env_obj = CustomTaskBase(
+            fast_reset=fast_reset,
+            success_criteria=success_criteria,
+            reward_fns=reward_fns,
+            seed=seed,
+            sim_name=sim_name,
+            image_size=image_size,
+            use_voxel=use_voxel,
+            voxel_size=voxel_size,
+            use_lidar=use_lidar,
+            lidar_rays=lidar_rays,
+            event_level_control=event_level_control,
+            initial_inventory=initial_inventory,
+            break_speed_multiplier=break_speed_multiplier,
+            world_seed=world_seed,
+            start_position=start_position,
+            initial_weather=initial_weather,
+            start_time=start_time,
+            allow_time_passage=allow_time_passage,
+            start_health=start_health,
+            start_food=start_food,
+        )
     return ARNNWrapper(env_obj, cam_interval=cam_interval)

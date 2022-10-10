@@ -1,0 +1,32 @@
+wood_suite: [
+  {
+    slot: 0,
+    name: "wood_sword",
+    quantity: 1,
+  },
+  {
+    slot: 36,
+    name: "wood_boots",
+    quantity: 1,
+  },
+  {
+    slot: 37,
+    name: "wood_leggings",
+    quantity: 1,
+  },
+  {
+    slot: 38,
+    name: "wood_chestplate",
+    quantity: 1,
+  },
+  {
+    slot: 39,
+    name: "wood_helmet",
+    quantity: 1,
+  },
+  {
+    slot: 40,
+    name: "shield",
+    quantity: 1,
+  },
+]

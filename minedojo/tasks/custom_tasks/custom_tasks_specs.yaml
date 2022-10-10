@@ -1,0 +1,26 @@
+
+custom:combat:0:
+  __cls__: combat
+  task: combat a spider
+  prompt: kill a spider
+  guidance: kill a spider guidance
+  initialize:
+    world_generator: combat
+    inventory: combat
+    mobs: spider
+  criteria:
+    criteric: kill
+
+
+custom:combat:1:
+  __cls__: combat
+  task: combat a cow
+  prompt: kill a cow
+  guidance: kill a cow guidance
+  initialize:
+    world_generator: combat
+    inventory: combat
+    mobs: cow
+  criteria:
+    criteric: kill
+
