@@ -541,7 +541,7 @@ def make(task_id: str, *args, cam_interval: int | float = 15, **kwargs):
 def _custom_task_make(task_id, *args, **kwargs):
     """
     """
-    from .custom_tasks import CUSTOM_TASKS, CustomTaskBase
+    from .custom_tasks import CUSTOM_TASKS, CustomMeta
     # grab task configs
     task_id = task_id.lower()
     task_specs = CUSTOM_TASKS[task_id].copy()
@@ -551,7 +551,7 @@ def _custom_task_make(task_id, *args, **kwargs):
     if meta_task_cls is not None:
         env_obj = _meta_task_make(meta_task_cls, *args, **task_specs, **kwargs)
     else:        
-        env_obj = CustomTaskBase(
+        env_obj = CustomMeta(
             fast_reset=fast_reset,
             success_criteria=success_criteria,
             reward_fns=reward_fns,
