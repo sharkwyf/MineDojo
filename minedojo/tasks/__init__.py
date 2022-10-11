@@ -548,7 +548,7 @@ def _custom_task_make(task_id, *args, **kwargs):
 
     # meta task
     meta_task_cls = task_specs.pop("__cls__")
-    if meta_task_cls is not None:
+    if meta_task_cls in MetaTaskName2Class:
         env_obj = _meta_task_make(meta_task_cls, *args, **task_specs, **kwargs)
     else:        
         env_obj = CustomMeta(
