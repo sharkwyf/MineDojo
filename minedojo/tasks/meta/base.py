@@ -233,6 +233,7 @@ class ExtraSpawnMetaTaskBase(MetaTaskBase):
         initial_mob_spawn_range_low: Optional[Tuple[int, int, int]] = None,
         initial_mob_spawn_range_high: Optional[Tuple[int, int, int]] = None,
         extra_spawn_rate: Optional[Dict[str, float]] = None,
+        min_spawn_range: int = None,
         extra_spawn_condition: Optional[
             Union[extra_spawn_condition_base, Dict[str, extra_spawn_condition_base]]
         ],
@@ -248,6 +249,7 @@ class ExtraSpawnMetaTaskBase(MetaTaskBase):
         base task class for meta tasks that require extra spawn, e.g., harvest, combat, and techtree
         """
         self._extra_spawn_rate = None
+        self.min_spawn_range = min_spawn_range
         if extra_spawn_rate is not None:
             assert all(
                 [1.0 >= rate >= 0.0 for rate in extra_spawn_rate.values()]
@@ -323,6 +325,8 @@ class ExtraSpawnMetaTaskBase(MetaTaskBase):
                 len(initial_mobs),
                 axis=0,
             )
+            low = np.array(initial_mob_spawn_range_low)
+            high = np.array(initial_mob_spawn_range_high)
             self._mob_spawn_range_space = gym.spaces.Box(
                 low=low, high=high, seed=kwargs["seed"]
             )
@@ -350,8 +354,21 @@ class ExtraSpawnMetaTaskBase(MetaTaskBase):
         self, reset_obs: Dict[str, Any], reset_info: Dict[str, Any]
     ) -> (Dict[str, Any], Dict[str, Any]):
         obs, info = reset_obs, reset_info
+        mobs_rel_positions = []
         if len(self._initial_mobs) > 0:
-            mobs_rel_positions = self._mob_spawn_range_space.sample()
+            for i in range(len(self._initial_mobs)):
+                mobs_rel_position = self._mob_spawn_range_space.sample()
+                if self.min_spawn_range != None:
+                    dis = mobs_rel_position[0]**2 + mobs_rel_position[2]**2
+                    print(dis)
+                    while dis < self.min_spawn_range**2:
+                        print('retry')
+                        mobs_rel_position = self._mob_spawn_range_space.sample()
+                        dis = mobs_rel_position[0]**2 + mobs_rel_position[1]**2
+                mobs_rel_positions.append(mobs_rel_position)
+                print('mobs_rel_position: ',mobs_rel_position)
+
+            print('mobs_rel_positions: ',mobs_rel_positions)
             obs, _, _, info = self.env.spawn_mobs(
                 self._initial_mobs, mobs_rel_positions
             )

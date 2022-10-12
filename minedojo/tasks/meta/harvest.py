@@ -126,6 +126,7 @@ class HarvestMeta(ExtraSpawnMetaTaskBase):
         initial_mobs: Optional[Union[str, List[str]]] = None,
         initial_mob_spawn_range_low: Optional[Tuple[int, int, int]] = None,
         initial_mob_spawn_range_high: Optional[Tuple[int, int, int]] = None,
+        min_spawn_range : Optional[int] = None,
         spawn_rate: Optional[Union[float, List[float], Dict[str, float]]] = None,
         spawn_range_low: Optional[Tuple[int, int, int]] = None,
         spawn_range_high: Optional[Tuple[int, int, int]] = None,
@@ -155,6 +156,8 @@ class HarvestMeta(ExtraSpawnMetaTaskBase):
         event_level_control: bool = True,
         # ------ misc ------
         sim_name: str = "HarvestMeta",
+        guidance: str = None,
+        task: str = None,
     ):
         if isinstance(target_names, str):
             target_names = [target_names]

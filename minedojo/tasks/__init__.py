@@ -1,9 +1,13 @@
 from __future__ import annotations
 import re
 import sys
+import os
+# sys.path.append(os.getcwd())
 import importlib_resources
 from itertools import product
 from omegaconf import OmegaConf
+
+from minedojo.tasks.meta.navigate import NavigateMeta
 
 from .meta.base import MetaTaskBase
 from ..sim import MineDojoSim, InventoryItem
@@ -29,6 +33,9 @@ def _resource_file_path(fname) -> str:
     with importlib_resources.path("minedojo.tasks.description_files", fname) as p:
         return str(p)
 
+def _resource_file_custom_path(fname) -> str:
+    with importlib_resources.path("minedojo.tasks.custom_tasks", fname) as p:
+        return str(p)
 
 _MetaTaskName2Class = {
     "Open-Ended": MineDojoSim,
@@ -38,6 +45,7 @@ _MetaTaskName2Class = {
     "Playthrough": Playthrough,
     "Survival": SurvivalMeta,
     "Creative": CreativeMeta,
+    "Navigate": NavigateMeta,
 }
 MetaTaskName2Class = {k.lower(): v for k, v in _MetaTaskName2Class.items()}
 
@@ -81,6 +89,9 @@ def _meta_task_make(meta_task: str, *args, **kwargs) -> MetaTaskBase | FastReset
 
 
 _ALL_TASKS_SPECS_UNFILLED = OmegaConf.load(_resource_file_path("tasks_specs.yaml"))
+# print(_ALL_TASKS_SPECS_UNFILLED)
+
+_CUS_TASKS_SPECS_UNFILLED = OmegaConf.load(_resource_file_custom_path("custom_tasks_specs.yaml"))
 # check no duplicates
 assert len(set(_ALL_TASKS_SPECS_UNFILLED.keys())) == len(_ALL_TASKS_SPECS_UNFILLED)
 
@@ -412,6 +423,14 @@ for task_id, task_specs in _ALL_TASKS_SPECS_UNFILLED.items():
             task_specs_filled["prompt"] = task_specs_filled["prompt"].replace(" 1", "")
 
             ALL_TASKS_SPECS[filled_task_id] = task_specs_filled
+print(ALL_TASKS_SPECS['combat_spider_forest_iron_armors_iron_sword_shield'])
+
+CUS_TASKS_SPECS = {}
+for task_id, task_specs in _CUS_TASKS_SPECS_UNFILLED.items():
+    unfilled_vars = re.findall(r"\{(.*?)\}", task_id)
+    CUS_TASKS_SPECS[task_id] = task_specs
+
+print(CUS_TASKS_SPECS['custom_combat_1'])
 
 # check no duplicates
 assert len(set(ALL_TASKS_SPECS.keys())) == len(ALL_TASKS_SPECS)
@@ -462,6 +481,8 @@ ALL_TASK_INSTRUCTIONS = {
     **ALL_CREATIVE_TASK_INSTRUCTIONS,
     PLAYTHROUGH_TASK_ID: PLAYTHROUGH_TASK_INSTRUCTION,
 }
+
+
 
 _logger.info(
     f"Loaded {len(P_TASKS_PROMPTS_GUIDANCE)} Programmatic tasks, "
@@ -530,47 +551,32 @@ def make(task_id: str, *args, cam_interval: int | float = 15, **kwargs):
         "survival",
     ]:
         env_obj = _meta_task_make(task_id, *args, **kwargs)
-    elif task_id.startswith("custom:"):
-        env_obj = _custom_task_make(task_id, *args, **kwargs)
+    elif task_id.startswith("custom"):
+        env_obj = _custom_task_make(task_id, cam_interval, *args, **kwargs)
     else:
         raise ValueError(f"Invalid task id provided {task_id}")
     return ARNNWrapper(env_obj, cam_interval=cam_interval)
 
 
 # Custom Tasks
-def _custom_task_make(task_id, *args, **kwargs):
+def _custom_task_make(task_id, cam_interval, *args, **kwargs):
     """
     """
-    from .custom_tasks import CUSTOM_TASKS, CustomMeta
-    # grab task configs
-    task_id = task_id.lower()
-    task_specs = CUSTOM_TASKS[task_id].copy()
+    assert task_id in CUS_TASKS_SPECS, f"Invalid task id provided {task_id}"
+    task_specs = CUS_TASKS_SPECS[task_id].copy()
+
+    # handle list of inventory items
+    if "initial_inventory" in task_specs:
+        kwargs["initial_inventory"] = _parse_inventory_dict(
+            task_specs["initial_inventory"]
+        )
+        task_specs.pop("initial_inventory")
+
+    # pop prompt from task specs because it is set from programmatic yaml
+    task_specs.pop("prompt")
 
     # meta task
     meta_task_cls = task_specs.pop("__cls__")
-    if meta_task_cls in MetaTaskName2Class:
-        env_obj = _meta_task_make(meta_task_cls, *args, **task_specs, **kwargs)
-    else:        
-        env_obj = CustomMeta(
-            fast_reset=fast_reset,
-            success_criteria=success_criteria,
-            reward_fns=reward_fns,
-            seed=seed,
-            sim_name=sim_name,
-            image_size=image_size,
-            use_voxel=use_voxel,
-            voxel_size=voxel_size,
-            use_lidar=use_lidar,
-            lidar_rays=lidar_rays,
-            event_level_control=event_level_control,
-            initial_inventory=initial_inventory,
-            break_speed_multiplier=break_speed_multiplier,
-            world_seed=world_seed,
-            start_position=start_position,
-            initial_weather=initial_weather,
-            start_time=start_time,
-            allow_time_passage=allow_time_passage,
-            start_health=start_health,
-            start_food=start_food,
-        )
-    return ARNNWrapper(env_obj, cam_interval=cam_interval)
+    print(meta_task_cls)
+    env_obj = _meta_task_make(meta_task_cls, *args, **task_specs, **kwargs)
+    return env_obj

@@ -133,6 +133,7 @@ class CombatMeta(ExtraSpawnMetaTaskBase):
         initial_mobs: Optional[Union[str, List[str]]] = None,
         initial_mob_spawn_range_low: Optional[Tuple[int, int, int]] = None,
         initial_mob_spawn_range_high: Optional[Tuple[int, int, int]] = None,
+        min_spawn_range : Optional[int] = None,
         spawn_rate: Optional[
             Union[float, int, List[Union[float, int]], Dict[str, Union[float, int]]]
         ] = None,
@@ -167,6 +168,8 @@ class CombatMeta(ExtraSpawnMetaTaskBase):
         event_level_control: bool = True,
         # ------ misc ------
         sim_name: str = "CombatMeta",
+        guidance: str = None,
+        task: str = None,
     ):
         if isinstance(target_names, str):
             target_names = [target_names]
@@ -224,6 +227,7 @@ class CombatMeta(ExtraSpawnMetaTaskBase):
             initial_mobs=initial_mobs,
             initial_mob_spawn_range_low=initial_mob_spawn_range_low,
             initial_mob_spawn_range_high=initial_mob_spawn_range_high,
+            min_spawn_range=min_spawn_range,
             extra_spawn_rate=spawn_rate,
             extra_spawn_condition=spawn_condition,
             extra_spawn_range_low=spawn_range_low,

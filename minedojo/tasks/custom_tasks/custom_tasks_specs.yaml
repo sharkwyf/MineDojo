@@ -24,3 +24,371 @@ custom:combat:1:
   criteria:
     criteric: kill
 
+custom_combat_1:
+  __cls__: combat
+  task: combat a spider
+  prompt: combat a spider in night forest with a iron sword, shield, and a full suite of iron armors
+  guidance: kill a cow guidance
+  target_names: spider
+  target_quantities: 1
+  reward_weights: 1
+  initial_mobs: ["rabbit","cat","chicken","spider"]
+  min_spawn_range: 5
+  initial_mob_spawn_range_low: [-7, 1, -7]
+  initial_mob_spawn_range_high: [7, 1, 7]
+  start_at_night: false
+  initial_inventory:
+    mainhand:
+      name: "iron_sword"
+    feet:
+      name: "iron_boots"
+    legs:
+      name: "iron_leggings"
+    chest:
+      name: "iron_chestplate"
+    head:
+      name: "iron_helmet"
+    offhand:
+      name: "shield"
+  specified_biome: "desert"
+  allow_mob_spawn: false
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_combat_2:
+  __cls__: combat
+  task: combat a sheep
+  prompt: combat a sheep in night forest with a iron sword, shield, and a full suite of iron armors
+  guidance: kill a sheep
+  target_names: sheep
+  target_quantities: 1
+  reward_weights: 1
+  initial_mobs: ["rabbit","cat","chicken","sheep"]
+  min_spawn_range: 5
+  initial_mob_spawn_range_low: [-7, 1, -7]
+  initial_mob_spawn_range_high: [7, 1, 7]
+  start_at_night: false
+  initial_inventory:
+    mainhand:
+      name: "iron_sword"
+    feet:
+      name: "iron_boots"
+    legs:
+      name: "iron_leggings"
+    chest:
+      name: "iron_chestplate"
+    head:
+      name: "iron_helmet"
+    offhand:
+      name: "shield"
+  specified_biome: "desert"
+  allow_mob_spawn: false
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_combat_3:
+  __cls__: combat
+  task: combat a cow
+  prompt: combat a cow in night forest with a iron sword, shield, and a full suite of iron armors
+  guidance: kill a cow
+  target_names: cow
+  target_quantities: 1
+  reward_weights: 1
+  initial_mobs: ["rabbit","cow","chicken","sheep"]
+  min_spawn_range: 5
+  initial_mob_spawn_range_low: [-7, 1, -7]
+  initial_mob_spawn_range_high: [7, 1, 7]
+  start_at_night: false
+  initial_inventory:
+    mainhand:
+      name: "iron_sword"
+  specified_biome: "desert"
+  allow_mob_spawn: false
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_combat_4:
+  __cls__: combat
+  task: combat a horse
+  prompt: combat a horse in night forest with a iron sword, shield, and a full suite of iron armors
+  guidance: kill a horse
+  target_names: horse
+  target_quantities: 1
+  reward_weights: 1
+  initial_mobs: ["rabbit","cow","horse","sheep"]
+  min_spawn_range: 5
+  initial_mob_spawn_range_low: [-7, 1, -7]
+  initial_mob_spawn_range_high: [7, 1, 7]
+  start_at_night: false
+  initial_inventory:
+    mainhand:
+      name: "iron_sword"
+  specified_biome: "desert"
+  allow_mob_spawn: false
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_combat_5:
+  __cls__: combat
+  task: combat a chicken
+  prompt: combat a chicken in night forest with a iron sword, shield, and a full suite of iron armors
+  guidance: kill a chicken
+  target_names: chicken
+  target_quantities: 1
+  reward_weights: 1
+  initial_mobs: ["rabbit","cow","horse","chicken"]
+  min_spawn_range: 5
+  initial_mob_spawn_range_low: [-7, 1, -7]
+  initial_mob_spawn_range_high: [7, 1, 7]
+  start_at_night: false
+  initial_inventory:
+    mainhand:
+      name: "iron_sword"
+  specified_biome: "desert"
+  allow_mob_spawn: false
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_combat_6:
+  __cls__: combat
+  task: combat a pig
+  prompt: combat a pig in night forest with a iron sword, shield, and a full suite of iron armors
+  guidance: kill a pig
+  target_names: pig
+  target_quantities: 1
+  reward_weights: 1
+  initial_mobs: ["pig","cow","horse","sheep"]
+  min_spawn_range: 5
+  initial_mob_spawn_range_low: [-7, 1, -7]
+  initial_mob_spawn_range_high: [7, 1, 7]
+  start_at_night: false
+  initial_inventory:
+    mainhand:
+      name: "iron_sword"
+  specified_biome: "desert"
+  allow_mob_spawn: false
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_combat_7:
+  __cls__: combat
+  task: combat a rabbit
+  prompt: combat a rabbit in night forest with a iron sword, shield, and a full suite of iron armors
+  guidance: kill a rabbit
+  target_names: rabbit
+  target_quantities: 1
+  reward_weights: 1
+  initial_mobs: ["rabbit","cow","horse","sheep"]
+  min_spawn_range: 5
+  initial_mob_spawn_range_low: [-7, 1, -7]
+  initial_mob_spawn_range_high: [7, 1, 7]
+  start_at_night: false
+  initial_inventory:
+    mainhand:
+      name: "iron_sword"
+  specified_biome: "desert"
+  allow_mob_spawn: false
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_combat_8:
+  __cls__: combat
+  task: combat a wolf
+  prompt: combat a wolf in night forest with a iron sword, shield, and a full suite of iron armors
+  guidance: kill a wolf
+  target_names: wolf
+  target_quantities: 1
+  reward_weights: 1
+  initial_mobs: ["rabbit","cow","horse","wolf"]
+  min_spawn_range: 5
+  initial_mob_spawn_range_low: [-7, 1, -7]
+  initial_mob_spawn_range_high: [7, 1, 7]
+  start_at_night: false
+  initial_inventory:
+    mainhand:
+      name: "iron_sword"
+    feet:
+      name: "iron_boots"
+    legs:
+      name: "iron_leggings"
+    chest:
+      name: "iron_chestplate"
+    head:
+      name: "iron_helmet"
+    offhand:
+      name: "shield"
+  specified_biome: "desert"
+  allow_mob_spawn: false
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+
+custom_combat_9:
+  __cls__: combat
+  task: combat a zombie
+  prompt: combat a zombie in night forest with a iron sword, shield, and a full suite of iron armors
+  guidance: kill a zombie
+  target_names: zombie
+  target_quantities: 1
+  reward_weights: 1
+  initial_mobs: ["rabbit","zombie","horse","cow"]
+  min_spawn_range: 5
+  initial_mob_spawn_range_low: [-7, 1, -7]
+  initial_mob_spawn_range_high: [7, 1, 7]
+  start_at_night: false
+  initial_inventory:
+    mainhand:
+      name: "iron_sword"
+    feet:
+      name: "iron_boots"
+    legs:
+      name: "iron_leggings"
+    chest:
+      name: "iron_chestplate"
+    head:
+      name: "iron_helmet"
+    offhand:
+      name: "shield"
+  specified_biome: "desert"
+  allow_mob_spawn: false
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_combat_10:
+  __cls__: combat
+  task: combat a witch
+  prompt: combat a witch in night forest with a iron sword, shield, and a full suite of iron armors
+  guidance: kill a witch
+  target_names: witch
+  target_quantities: 1
+  reward_weights: 1
+  initial_mobs: ["rabbit","witch","horse","cow"]
+  min_spawn_range: 5
+  initial_mob_spawn_range_low: [-7, 1, -7]
+  initial_mob_spawn_range_high: [7, 1, 7]
+  start_at_night: false
+  initial_inventory:
+    mainhand:
+      name: "iron_sword"
+    feet:
+      name: "iron_boots"
+    legs:
+      name: "iron_leggings"
+    chest:
+      name: "iron_chestplate"
+    head:
+      name: "iron_helmet"
+    offhand:
+      name: "shield"
+  specified_biome: "desert"
+  allow_mob_spawn: false
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_navigate_1:
+  __cls__: harvest
+  task: navigate a sheep
+  prompt: navigate a sheep
+  guidance: find a sheep
+  target_names: sheep
+  target_quantities: 1
+  reward_weights: 1
+  initial_mobs: ["rabbit","chicken","horse","sheep"]
+  min_spawn_range: 7
+  initial_mob_spawn_range_low: [-10, 1, -10]
+  initial_mob_spawn_range_high: [10, 1, 10]
+  start_at_night: false
+  specified_biome: "plains"
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_navigate_2:
+  __cls__: harvest
+  task: navigate a cow
+  prompt: navigate a cow
+  guidance: find a cow
+  target_names: cow
+  target_quantities: 1
+  reward_weights: 1
+  initial_mobs: ["cow","chicken","horse","sheep"]
+  min_spawn_range: 7
+  initial_mob_spawn_range_low: [-10, 1, -10]
+  initial_mob_spawn_range_high: [10, 1, 10]
+  start_at_night: false
+  specified_biome: "plains"
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_navigate_3:
+  __cls__: harvest
+  task: navigate a horse
+  prompt: navigate a horse
+  guidance: find a horse
+  target_names: horse
+  target_quantities: 1
+  reward_weights: 1
+  initial_mobs: ["cow","chicken","horse","sheep"]
+  min_spawn_range: 7
+  initial_mob_spawn_range_low: [-10, 1, -10]
+  initial_mob_spawn_range_high: [10, 1, 10]
+  start_at_night: false
+  specified_biome: "plains"
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_navigate_4:
+  __cls__: navigate
+  task: navigate a tree
+  prompt: navigate a tree
+  guidance: find a tree
+  target_names: tree
+  specified_biome: "plains"
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_navigate_5:
+  __cls__: navigate
+  task: navigate a sand
+  prompt: navigate a sand
+  guidance: find a sand
+  target_names: sand
+  specified_biome: "beach"
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_navigate_6:
+  __cls__: navigate
+  task: navigate a sand
+  prompt: navigate a sand
+  guidance: find a sand
+  target_names: sand
+  specified_biome: "beach"
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false
+
+custom_navigate_7:
+  __cls__: navigate
+  task: navigate a sand
+  prompt: navigate a sand
+  guidance: find a sand
+  target_names: sand
+  specified_biome: "beach"
+  use_voxel: true
+  voxel_size: {xmin: -1, ymin: -1, zmin: -1, xmax: 1, ymax: 1, zmax: 1}
+  use_lidar: false

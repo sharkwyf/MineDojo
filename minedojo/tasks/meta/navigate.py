@@ -1,11 +1,13 @@
 from typing import Union, Optional, List, Dict, Tuple
 
+from minedojo.tasks.meta.utils import reward_fns,success_criteria
+
 from .base import MetaTaskBase
 from ...sim.inventory import InventoryItem
-from .utils import survive_per_day_reward, survive_n_days_reward, time_since_death_check
+from .utils import survive_per_day_reward, survive_n_days_reward, time_since_death_check,simple_inventory_based_check
 
 
-class SurvivalMeta(MetaTaskBase):
+class NavigateMeta(MetaTaskBase):
     """
     Class for survival tasks.
     Args:
@@ -92,8 +94,8 @@ class SurvivalMeta(MetaTaskBase):
         self,
         *,
         # ------ target days and reward per day
-        target_days: int,
-        per_day_reward: Union[int, float] = 1,
+        # target_days: int,
+        # per_day_reward: Union[int, float] = 1,
         success_reward: Optional[Union[int, float]] = None,
         # ------ initial conditions ------
         start_position: Optional[Dict[str, Union[float, int]]] = None,
@@ -116,6 +118,7 @@ class SurvivalMeta(MetaTaskBase):
         lidar_rays: Optional[List[Tuple[float, float, float]]] = None,
         # ------ event-level action or keyboard-mouse level action ------
         event_level_control: bool = True,
+        start_at_night: bool = False,
         # ------ misc ------
         sim_name: str = "SurvivalMeta",
         specified_biome: Optional[Union[int, str]] = None,
@@ -123,27 +126,20 @@ class SurvivalMeta(MetaTaskBase):
         guidance: str = None,
         task: str = None,
     ):
-        assert (
-            target_days > 1
-        ), f"expect target_days > 1 for non-trivial survival task, got {target_days}"
-        self._target_days = target_days
-        success_reward = success_reward or target_days * per_day_reward
-
-        reward_fns = [
-            survive_per_day_reward(self.mc_ticks_per_day, per_day_reward),
-            survive_n_days_reward(self.mc_ticks_per_day, target_days, success_reward),
-        ]
-        success_criteria = [time_since_death_check(self.mc_ticks_per_day * target_days)]
+        
+        
 
         generate_world_type = (
             "default" if specified_biome is None else "specified_biome"
         )
 
+        start_time = 18000 if start_at_night else None
+
         super().__init__(
             fast_reset=fast_reset,
-            success_criteria=success_criteria,
-            reward_fns=reward_fns,
             seed=seed,
+            reward_fns=reward_fns.reward_fn_base,
+            success_criteria=success_criteria.check_success_base,
             sim_name=sim_name,
             image_size=image_size,
             use_voxel=use_voxel,

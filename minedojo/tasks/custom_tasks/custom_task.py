@@ -200,14 +200,7 @@ class CustomMeta(ExtraSpawnMetaTaskBase):
                 for k in spawn_rate.keys()
             }
 
-        success_criteria = [
-            simple_stat_kill_entity_based_check(name=k, quantity=v)
-            for k, v in target_quantities.items()
-        ]
-        reward_fns = [
-            simple_stat_kill_entity_based_reward(name=k, weight=v)
-            for k, v in reward_weights.items()
-        ]
+
 
         start_time, allow_time_passage = None, True
         if start_at_night:
