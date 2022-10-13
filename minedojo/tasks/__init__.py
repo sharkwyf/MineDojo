@@ -19,6 +19,7 @@ from .meta import (
     Playthrough,
     SurvivalMeta,
     CreativeMeta,
+    CustomMeta,
 )
 import logging
 
@@ -46,6 +47,7 @@ _MetaTaskName2Class = {
     "Survival": SurvivalMeta,
     "Creative": CreativeMeta,
     "Navigate": NavigateMeta,
+    "Custom":CustomMeta
 }
 MetaTaskName2Class = {k.lower(): v for k, v in _MetaTaskName2Class.items()}
 
@@ -423,7 +425,7 @@ for task_id, task_specs in _ALL_TASKS_SPECS_UNFILLED.items():
             task_specs_filled["prompt"] = task_specs_filled["prompt"].replace(" 1", "")
 
             ALL_TASKS_SPECS[filled_task_id] = task_specs_filled
-print(ALL_TASKS_SPECS['combat_spider_forest_iron_armors_iron_sword_shield'])
+# print(ALL_TASKS_SPECS['combat_spider_forest_iron_armors_iron_sword_shield'])
 
 CUS_TASKS_SPECS = {}
 for task_id, task_specs in _CUS_TASKS_SPECS_UNFILLED.items():

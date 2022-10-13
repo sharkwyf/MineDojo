@@ -122,6 +122,7 @@ class MineDojoSim(gym.Env):
         *,
         # ------ initial conditions ------
         initial_inventory: Optional[List[InventoryItem]] = None,
+        initial_block: Optional[List[InventoryItem]] = None,
         start_position: Optional[Dict[str, Union[float, int]]] = None,
         start_health: Optional[float] = None,
         start_food: Optional[int] = None,
@@ -481,6 +482,7 @@ class MineDojoSim(gym.Env):
             - ``bool`` - Whether the episode has ended.
             - ``dict`` - Contains auxiliary diagnostic information (helpful for debugging, and sometimes learning).
         """
+        print('spawning mobs')
         return self._cmd_executor.spawn_mobs(mobs, rel_positions, action)
 
     def set_block(
@@ -533,6 +535,7 @@ class MineDojoSim(gym.Env):
             - ``bool`` - Whether the episode has ended.
             - ``dict`` - Contains auxiliary diagnostic information (helpful for debugging, and sometimes learning).
         """
+        print('setting inventory')
         return self._cmd_executor.set_inventory(inventory_list, action)
 
     def teleport_agent(self, x, y, z, yaw, pitch, action: Optional[dict] = None):
