@@ -51,7 +51,7 @@ Installing the MineDojo stable version is as simple as:
 ```bash
 pip install minedojo
 ```
-
+xyz
 To install the cutting edge version from the main branch of this repo, run:
 
 ```bash
